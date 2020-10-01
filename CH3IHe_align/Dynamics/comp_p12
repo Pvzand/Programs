@@ -1,0 +1,2 @@
+ifort -O3 pp12.f pot_func-4.f 3j-Nad.f spline_splset.f fft.f dsyev_full.f ylmb.f -O -o pp12.exe
+

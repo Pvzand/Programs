@@ -1,0 +1,25 @@
+### nbrat12d.f90 is nbrat12.f90 modified to add new variables: the energy phases for the d-coeffts
+### When Its name is the only change in a subroutine, the subroutine name is not changed
+###
+gfortran -O2 -fno-automatic -o dynzpadeandwf dynzpadeandwf.f90 configdwf2.f90 wfhersq.f90 samplewf.f90 matinv.f comJ.f90 splset.f dlagra.f jordan.f splinr.f tire_dicho_gen4.f90 wpini_sod.f90 fpottot2.f90 Random.f fhpcg.f ffct.f90 foutp.f90 derfpottot.f90 deranpotBapHeXZPAD.f90 derpotHeHeZPAD.f90 derpotHeHeZPADu.f90 hpcg_so.f fctd.f90 outpd.f90 evalhopd.f90 globveladj.f90 DIMpdynanZPAD.f90 DIMpSOdynanZPAD.f90 adiabfK.f90 DIMpderanZPAD.f90 derpotpotBapHepPSanZPAD.f90 distN.f90 VBapHeNXtot2.f90 ./potBapHeXZPADfit.f90 ./potheheZPADtot.f90 chbsis_so.f mtnmul.f ch2.f
+### compile with checks
+###https://gcc.gnu.org/onlinedocs/gfortran/Option-Summary.html#Option-Summary
+### useful checks:
+###http://staff.washington.edu/rjl/uwamath583s11/sphinx/notes/html/gfortran_flags.html
+### -fbounds-check: Add a check that the array index is within the bounds of the array
+### (deprecated, included in -fcheck=all)
+### -ffpe-trap=zero,overflow,underflow tells Fortran to trap the listed floating point errors (fpe).
+# gfortran -O2 -g -fcheck=all -Wall -fno-automatic -o dynzpadeand dynzpadeand.f90 configd.f90 tire_dicho_gen4.f90 wpini_sod.f90 fpottot2.f90 Random.f fhpcg.f ffct.f90 foutp.f90 derfpottot.f90 deranpotBapHeXZPAD.f90 derpotHeHeZPAD.f90 derpotHeHeZPADu.f90 hpcg_so.f fctd.f90 outpd.f90 evalhopd.f90 globveladj.f90 DIMpdynanZPAD.f90 DIMpSOdynanZPAD.f90 adiabfK.f90 DIMpderanZPAD.f90 derpotpotBapHepPSanZPAD.f90 distN.f90 VBapHeNXtot2.f90 ./potBapHeXZPADfit.f90 ./potheheZPADtot.f90 chbsis_so.f mtnmul.f ch2.f 
+
+echo 'end of compilation'
+date
+echo 'running'
+time ./dynzpadeandwf < BapNwf.in  > dynzpadeandwf.res
+
+echo 'end of job'
+date
+
+rm dynzpadeandwf
+
+
+

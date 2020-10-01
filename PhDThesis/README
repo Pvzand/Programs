@@ -1,0 +1,4 @@
+The programs contained in this folder are an example of my PhD thesis work, which dealt with the simulation and of electron and nuclear dynamics in laser fields. I worked mainly developing my own programs to study the electron-nuclear dynamics in small model systems ((Shin-Metiu model, soft-core potentials). Different control strategies were implemented within the dynamics programs.
+Dyn2D_LC solves the TDSE in a 2D grid. It uses a Split-Operator method for the time propagation of the wavepackets. Local control algorithm is program to control, in this case, the electron transfer in a colinear model of H2+ molecule. FGH1D.f computes eigenvalues and eigenfunctions of a TISE. 
+coulombpotentialH2+2D.f calculates the PES in a 2D grid for the same colinear model of H2+.  
+FFT programs calculate the Fourier transform to change between momemtum and coordinate space.

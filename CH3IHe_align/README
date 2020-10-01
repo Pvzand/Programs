@@ -1,0 +1,3 @@
+This folder contain the programs to simulate the laser alignment of CH3I molecule attached to an He atom, to understand the experimental alignment dynamics of CH3I in He nanodroplets.
+It contains two subfolders, one with the programs for the dynamics and the other contains the code to obtain and check the CH3I-He potentials.
+

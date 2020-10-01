@@ -1,0 +1,1 @@
+gfortran p4.f pot_sub.f vch3ihen.o vch3he_rc.o hepair.o libm.o -I/Users/patricia/SHTOOLS-3.4/modules -m64 -fPIC -O3 -ffast-math -L/Users/patricia/SHTOOLS-3.4/lib -lSHTOOLS -L/usr/local/lib -lfftw3 -lm -llapack -lblas

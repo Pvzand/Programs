@@ -1,0 +1,185 @@
+      program ppp
+      use SHTOOLS
+
+      implicit none
+
+      integer    k,l,m
+
+      integer    i,j,n,ndum,nr
+      parameter (n=256)     ! number of points in th,ph, needs to be even 
+
+      real*8     r,rmax,rmin
+
+      real*8     th,ph,pi
+      real*8     potCH3I
+      complex*16 pott
+      complex*16 grid(n,n)
+
+      integer    sampling,csphase,lmax,norm,lmax_calc
+   
+      parameter (sampling=1)       ! use nxn grid
+      parameter (csphase=1)        ! use nxn grid
+      parameter (norm=4)           ! use orthonormal sh
+      parameter (lmax_calc=n/2-1)  ! use nxn grid
+
+      complex*16 cilm(2,lmax_calc+1,lmax_calc+1)
+
+ 
+      pi=dacos(-1.d0)
+      open(1,file='grid')
+      read(1,*)nr
+      read(1,*)rmin,rmax
+
+      open(45,file='potdev.dat')
+      open(46,file='pdev.dat')
+
+
+c_____loop over radius
+
+      do k=1,nr
+
+      r=rmin+(rmax-rmin)*dble(k-1)/dble(nr-1)
+
+
+      do i=1,n
+      do j=1,n
+
+c      write(*,*) i,j
+
+       th=      pi*dble(i-1)/dble(n)
+       ph= 2.d0*pi*dble(j-1)/dble(n)
+    
+c       grid(i,j)=pott(th,ph)        ! for test-model function
+      grid(i,j)=potCH3I(0,r,th,ph)
+
+c     write(22,*) th,ph,dreal(grid(i,j))  ! for gnu-plot
+      enddo
+c     write(22,*)   ! for gnu-plot
+      enddo
+
+      call SHExpandDHC(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
+
+      do m=-3,3
+       
+       if (m.lt.0) write(50,*) m,r,(dreal(cilm(2,j+1,-m+1)),j=-m,6)
+     
+       if (m.ge.0) write(51,*) m,r,(dreal(cilm(1,j+1, m+1)),j=m,6)
+
+
+       enddo
+
+      write(45,88) r
+     .  ,dreal(cilm(1,1,1))  ! 0,0
+     .  ,dreal(cilm(1,2,1))  ! 1,0
+     .  ,dreal(cilm(1,2,2))  ! 1,1
+     .  ,dreal(cilm(2,2,2))  ! 1,-1
+     .  ,dreal(cilm(1,3,1))  ! 2,0
+     .  ,dreal(cilm(1,4,1))  ! 3,0
+     .  ,dreal(cilm(1,4,4))  ! 3,3
+     .  ,dreal(cilm(1,5,1))  ! 4,0
+     .  ,dreal(cilm(1,5,4))  ! 4,3
+     .  ,dreal(cilm(1,6,1))  ! 5,0
+     .  ,dreal(cilm(1,6,4))  ! 5,3
+     .  ,dreal(cilm(1,7,1))  ! 6,0
+     .  ,dreal(cilm(1,7,4))  ! 6,3
+     .  ,dreal(cilm(1,7,7))  ! 6,6
+     .  ,dreal(cilm(1,8,1))  ! 7,0
+     .  ,dreal(cilm(1,8,4))  ! 7,3
+     .  ,dreal(cilm(1,8,8))  ! 7,7
+     .  ,dreal(cilm(1,9,1))  ! 8,0
+     .  ,dreal(cilm(1,9,4))  ! 8.3
+     .  ,dreal(cilm(1,10,1))   ! 9,0
+     .  ,dreal(cilm(1,11,1))   ! 10,0
+     .  ,dreal(cilm(1,12,1))   ! 11,0
+     .  ,dreal(cilm(1,13,1))   ! 12,0
+     .  ,dreal(cilm(1,14,1))   ! 13,0
+
+      write(47,88) r
+     .  ,dreal(cilm(2,1,1)),dimag(cilm(2,1,1))   ! 0,0
+     .  ,dreal(cilm(2,2,1)),dimag(cilm(2,2,1))   ! 1,0
+     .  ,dreal(cilm(2,3,1)),dimag(cilm(2,3,1))   ! 2,0
+     .  ,dreal(cilm(2,4,1)),dimag(cilm(2,4,1))   ! 3,0
+     .  ,dreal(cilm(2,4,4)),dimag(cilm(2,4,4))   ! 3,-3
+     .  ,dreal(cilm(2,5,1)),dimag(cilm(2,5,1))   ! 4,0
+     .  ,dreal(cilm(2,5,4)),dimag(cilm(2,5,4))   ! 4,-3
+     .  ,dreal(cilm(2,6,1)),dimag(cilm(2,1,1))   ! 5,0
+     .  ,dreal(cilm(2,6,4)),dimag(cilm(2,1,1))   ! 5,-3
+     .  ,dreal(cilm(2,7,1)),dimag(cilm(2,7,1))   ! 6,0
+     .  ,dreal(cilm(2,7,4)),dimag(cilm(2,7,4))   ! 6,-3
+     .  ,dreal(cilm(2,7,7)),dimag(cilm(2,7,7))   ! 6,-6
+c     .  ,dreal(cilm(2,8,1)),dimag(cilm(2,8,1))   ! 7,0
+c     .  ,dreal(cilm(2,8,4)),dimag(cilm(2,8,4))   ! 7,-3
+c     .  ,dreal(cilm(2,8,8)),dimag(cilm(2,8,8))   ! 7,-7
+c     .  ,dreal(cilm(2,9,1)),dimag(cilm(2,9,1))   ! 8,0
+c     .  ,dreal(cilm(2,9,4)),dimag(cilm(2,9,4))   ! 8.-3
+c     .  ,dreal(cilm(2,10,1)),dimag(cilm(2,10,1))   ! 9.0
+c     .  ,dreal(cilm(2,11,1)),dimag(cilm(2,11,1))   ! 10,0
+
+
+
+      write(46,88) r
+     .  ,dreal(cilm(1,1,1))   ! 0,0
+     .  ,dreal(cilm(1,2,1))   ! 1,0
+     .  ,dreal(cilm(1,3,1))   ! 2,0
+     .  ,dreal(cilm(1,4,1))   ! 3,0
+     .  ,dreal(cilm(1,4,4))   ! 3,3
+     .  ,dreal(cilm(1,5,1))   ! 4,0
+     .  ,dreal(cilm(1,5,4))   ! 4,3
+     .  ,dreal(cilm(1,6,1))   ! 5,0
+     .  ,dreal(cilm(1,6,4))   ! 5,3
+     .  ,dreal(cilm(1,7,1))   ! 6,0
+     .  ,dreal(cilm(1,7,4))   ! 6,3
+     .  ,dreal(cilm(1,7,7))   ! 6,6
+  
+
+      
+      enddo   ! end of loop over radius
+
+
+      
+
+88    format(26F14.8)
+
+      end
+
+
+      
+
+
+      function pott(th,ph)
+      implicit none
+
+      real*8 fpi,pi
+      parameter (pi=dacos(-1.d0))
+      parameter (fpi=1.d0/dsqrt(4.d0*pi))
+
+      real*8 th,ph
+
+      complex*16 pott
+      complex*16 y00,y10,y20,y30,y3m3,y3p3
+   
+
+      y00=fpi
+ 
+      y10=fpi*dsqrt(3.d0)*cos(th)
+
+      y20=fpi*dsqrt(5.d0/4.d0)*(3.d0*cos(th)**2-1.d0)
+
+      y3m3=fpi*dsqrt(35.d0/16.d0)*sin(th)**3
+     .    *cdexp(dcmplx(0.d0,-3.d0*ph))
+
+      y30 = fpi*dsqrt(7.d0/4.d0)*(5.d0*cos(th)**3-3.d0*cos(th))
+
+      y3p3=-fpi*dsqrt(35.d0/16.d0)*sin(th)**3
+     .    *cdexp(dcmplx(0.d0, 3.d0*ph))
+
+
+      pott=(0.1*y00+0.012*y10+0.2*y20+0.1*y30)+0.4*(y3m3-y3p3)
+
+
+      return
+
+      end
+
+
+
