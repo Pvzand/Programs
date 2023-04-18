@@ -1,2 +1,3 @@
-# programs_MolSSI
+# programs
+
 Examples of previous software development
